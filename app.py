@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 tasks = []
 next_id = 1
-
+#task filtering supported
 @app.route("/")
 def index():
     status = request.args.get("status", "all")
