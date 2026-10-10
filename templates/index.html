@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Task Manager</title>
+</head>
+<body>
+    <h1>Student Task Manager</h1>
+
+    <form action="/add" method="post">
+        <input name="title" placeholder="Enter task title" required>
+        <input name="deadline" type="date">
+        <button type="submit">Add Task</button>
+    </form>
+
+    <p>
+        <a href="/">All</a> |
+        <a href="/?status=pending">Pending</a> |
+        <a href="/?status=completed">Completed</a>
+    </p>
+
+    <ul>
+        {% for task in tasks %}
+        <li>
+            {{ task.title }} — {{ task.deadline or "No deadline" }} — {{ task.status }}
+
+            {% if task.status == "pending" %}
+            <form action="/complete/{{ task.id }}" method="post" style="display:inline">
+                <button type="submit">Complete</button>
+            </form>
+            {% endif %}
+
+            <form action="/delete/{{ task.id }}" method="post" style="display:inline">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% else %}
+        <li>No tasks found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
