@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)  # Exposes the /metrics endpoint automatically
+
 tasks = []
 next_id = 1
-#task filtering supported
+
 @app.route("/")
 def index():
     status = request.args.get("status", "all")
@@ -44,4 +47,4 @@ def delete_task(task_id):
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
