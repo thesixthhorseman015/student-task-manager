@@ -45,10 +45,12 @@ jobs:
         run: |
           docker build -t student-task-manager:latest .
 
-      - name: Test deployment via Docker Compose
+      - name: Test single container deployment
         run: |
-          docker compose up -d
+          docker run -d -p 5000:5000 --name test_app student-task-manager:latest
           sleep 5
-          docker compose ps
+          docker ps
           curl --fail http://localhost:5000 || exit 1
-          docker compose down
+          curl --fail http://localhost:5000/metrics || exit 1
+          docker stop test_app
+          docker rm test_app
